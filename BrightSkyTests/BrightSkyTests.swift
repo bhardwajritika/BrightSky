@@ -1,0 +1,17 @@
+//
+//  BrightSkyTests.swift
+//  BrightSkyTests
+//
+//  Created by Tarun Sharma on 08/01/26.
+//
+
+import Testing
+@testable import BrightSky
+
+struct BrightSkyTests {
+
+    @Test func example() async throws {
+        // Write your test here and use APIs like `#expect(...)` to check expected conditions.
+    }
+
+}
