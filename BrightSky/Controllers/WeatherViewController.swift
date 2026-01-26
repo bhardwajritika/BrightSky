@@ -20,8 +20,12 @@ class WeatherViewController: UIViewController {
     }
     
     private func getLocation() {
-        LocationManager.shared.getCurrentLocation { [weak self] location in
+        LocationManager.shared.getCurrentLocation { location in
             print(String(describing: location))
+            
+//            if let location = location {
+//                WeatherManager.shared.getWeather(for: location)
+//            }
         }
     }
     

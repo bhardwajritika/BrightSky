@@ -12,9 +12,11 @@ import Foundation
 final class WeatherManager {
     static let shared = WeatherManager()
     
+    let service = WeatherService.shared
+    
     private init() {}
     
-    public func getWeather(for location: CLLocation) {
+    public func getWeather(for location: CLLocation, completion: @escaping () -> Void) {
         
     }
 }

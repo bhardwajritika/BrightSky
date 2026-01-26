@@ -21,7 +21,7 @@ class TabViewController: UITabBarController {
         let nav1 = UINavigationController(rootViewController: tab1)
         let nav2 = UINavigationController(rootViewController: tab2)
         
-        nav1.tabBarItem = UITabBarItem(title: "Weather", image: UIImage(systemName: "sun.max"), tag: 1)
+        nav1.tabBarItem = UITabBarItem(title: "Weather", image: UIImage(systemName: "cloud.sun"), tag: 1)
         nav2.tabBarItem = UITabBarItem(title: "Settings", image: UIImage(systemName: "gear"), tag: 2)
         
         setViewControllers([
