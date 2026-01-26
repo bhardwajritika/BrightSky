@@ -9,7 +9,11 @@ import UIKit
 
 final class SettingsView: UIView {
     
-    private var viewModel : SettingsViewModel?
+    private var viewModel : SettingsViewModel? {
+        didSet{
+            tableView.reloadData()
+        }
+    }
     
     private let tableView: UITableView = {
         let table = UITableView()

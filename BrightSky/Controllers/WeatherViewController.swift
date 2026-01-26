@@ -23,9 +23,11 @@ class WeatherViewController: UIViewController {
         LocationManager.shared.getCurrentLocation { location in
             print(String(describing: location))
             
-//            if let location = location {
-//                WeatherManager.shared.getWeather(for: location)
-//            }
+            if let location = location {
+                WeatherManager.shared.getWeather(for: location){
+                    
+                }
+            }
         }
     }
     
