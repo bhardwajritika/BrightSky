@@ -21,6 +21,7 @@ class SettingsViewController: UIViewController {
         super.viewDidLoad()
         
         view.addSubview(primaryView)
+        primaryView.delegate = self
         addConstraints()
     }
     
@@ -35,4 +36,24 @@ class SettingsViewController: UIViewController {
     }
     
 
+}
+
+
+extension SettingsViewController : SettingsViewDelegate {
+    func settingsView(_ view: SettingsView, didTap option: SettingOption) {
+        switch option {
+        case .upgrade:
+            print("upgrade")
+        case .privacyPolicy:
+            print("pp")
+        case .terms:
+            print("terms")
+        case .contact:
+            print("contact")
+        case .getHelp:
+            print("get help")
+        case .rateApp:
+            print("rate app")
+        }
+    }
 }
