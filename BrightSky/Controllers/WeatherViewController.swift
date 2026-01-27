@@ -24,8 +24,10 @@ class WeatherViewController: UIViewController {
             print(String(describing: location))
             
             if let location = location {
-                WeatherManager.shared.getWeather(for: location){
-                    
+                WeatherManager.shared.getWeather(for: location){ [weak self] in
+                    DispatchQueue.main.async {
+                        self?.primaryView.reload()
+                    }
                 }
             }
         }
