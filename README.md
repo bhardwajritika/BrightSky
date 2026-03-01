@@ -108,7 +108,7 @@ The project focuses on maintainability, scalability, and modern UIKit patterns s
 - WeatherManager – Wrapper around WeatherService.shared
 - IAPManager – Subscription state management via RevenueCat
 - Custom collection view cells:
-a. CurrentWeatherCollectionViewCell
-b. HourlyWeatherCollectionViewCell
-c. DailyWeatherCollectionViewCell
+1.  CurrentWeatherCollectionViewCell
+2.  HourlyWeatherCollectionViewCell
+3.  DailyWeatherCollectionViewCell
 - WeatherViewModel enum drives compositional layout sections
