@@ -102,7 +102,8 @@ The project focuses on maintainability, scalability, and modern UIKit patterns s
 7. Paywall entry point is removed.
 8. Settings screen provides static navigation options for future expansion.
 
-9. 🔍 Code Highlights
+
+🔍 Code Highlights
 
 - LocationManager – Asynchronous location handling
 - WeatherManager – Wrapper around WeatherService.shared
