@@ -63,7 +63,7 @@ The project focuses on maintainability, scalability, and modern UIKit patterns s
       <b>Subscription Screen</b>
     </td>
     <td align="center">
-      <img src="./Screenshots/AfterSubscription.png" width="250" /><br/>
+      <img src="./BSScreenshots/AfterSubscription.png" width="250" /><br/>
       <b>After Subscription Screen</b>
     </td>
   </tr>
