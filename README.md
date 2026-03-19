@@ -49,7 +49,7 @@ The project focuses on maintainability, scalability, and modern UIKit patterns s
 <table align="center">
   <tr>
     <td align="center">
-      <img src="./BSScreenshots/Mainscreen.png" width="250" /><br/>
+      <img src="./BSScreenshots/MainScreen.png" width="250" /><br/>
       <b>Main Screen</b>
     </td>
     <td align="center">
@@ -59,7 +59,7 @@ The project focuses on maintainability, scalability, and modern UIKit patterns s
   </tr>
   <tr>
     <td align="center">
-      <img src="./BSScreenshots/Subscriptionscreen.png" width="250" /><br/>
+      <img src="./BSScreenshots/SubscriptionScreen.png" width="250" /><br/>
       <b>Subscription Screen</b>
     </td>
     <td align="center">
