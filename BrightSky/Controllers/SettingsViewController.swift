@@ -9,23 +9,47 @@ import UIKit
 
 class SettingsViewController: UIViewController {
 
-    
-    private let primaryView :  SettingsView = {
+    private let primaryView: SettingsView = {
         let view = SettingsView()
         let viewModel = SettingsViewModel(options: SettingOption.allCases)
         view.configure(with: viewModel)
         return view
     }()
-    
+
+    private let gradientLayer = CAGradientLayer()
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        setupGradient()
+        setupNavigationBar()
         view.addSubview(primaryView)
         primaryView.delegate = self
         addConstraints()
     }
-    
-    
+
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        gradientLayer.frame = view.bounds
+    }
+
+    private func setupGradient() {
+        let (topColor, bottomColor) = getGradientColors()
+
+        gradientLayer.colors = [topColor.cgColor, bottomColor.cgColor]
+        gradientLayer.startPoint = CGPoint(x: 0.3, y: 0.0)
+        gradientLayer.endPoint   = CGPoint(x: 0.7, y: 1.0)
+        view.layer.insertSublayer(gradientLayer, at: 0)
+    }
+
+    private func setupNavigationBar() {
+        let appearance = UINavigationBarAppearance()
+        appearance.configureWithTransparentBackground()
+        appearance.titleTextAttributes = [.foregroundColor: UIColor.white]
+        navigationController?.navigationBar.standardAppearance = appearance
+        navigationController?.navigationBar.scrollEdgeAppearance = appearance
+        navigationController?.navigationBar.tintColor = .white
+    }
+
     private func addConstraints() {
         NSLayoutConstraint.activate([
             primaryView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
@@ -34,12 +58,10 @@ class SettingsViewController: UIViewController {
             primaryView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
         ])
     }
-    
-
 }
 
 
-extension SettingsViewController : SettingsViewDelegate {
+extension SettingsViewController: SettingsViewDelegate {
     func settingsView(_ view: SettingsView, didTap option: SettingOption) {
         switch option {
         case .upgrade:

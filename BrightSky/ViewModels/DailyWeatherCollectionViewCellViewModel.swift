@@ -28,9 +28,9 @@ struct DailyWeatherCollectionViewCellViewModel {
     
     public var temperature: String {
         
-        var lowTemp = Resources().formatTemperature (temp: model.lowTemperature.description)
+        let lowTemp = Resources().formatTemperature (temp: model.lowTemperature.description)
         
-        var highTemp = Resources().formatTemperature (temp: model.highTemperature.description)
+        let highTemp = Resources().formatTemperature (temp: model.highTemperature.description)
         
         return "\(lowTemp) - \(highTemp)"
     }

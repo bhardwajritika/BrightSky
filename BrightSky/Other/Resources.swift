@@ -15,7 +15,7 @@ class Resources {
             .joined()
         
         let value = Double(number) ?? 0
-        let formatted = String(format: "%.2f°C", locale: Locale(identifier: "en_US_POSIX"), value)
+        let formatted = String(format: "%.0f°C", locale: Locale(identifier: "en_US_POSIX"), value)
         
         return formatted
     }

@@ -10,19 +10,29 @@ import UIKit
 class DailyWeatherCollectionViewCell: UICollectionViewCell {
     static let cellIdentifier = "DailyWeatherCollectionViewCell"
     
+    private let blurView: UIVisualEffectView = {
+        let blur = UIVisualEffectView(effect: UIBlurEffect(style: .systemUltraThinMaterialDark))
+        blur.translatesAutoresizingMaskIntoConstraints = false
+        blur.layer.cornerRadius = 16
+        blur.clipsToBounds = true
+        return blur
+    }()
+    
     private let tempLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textAlignment = .center
-        label.font = .systemFont(ofSize: 18, weight: .regular)
+        label.textAlignment = .right
+        label.font = .systemFont(ofSize: 18, weight: .semibold)
+        label.textColor = .white
         return label
     }()
     
     private let timeLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textAlignment = .center
-        label.font = .systemFont(ofSize: 22, weight: .bold)
+        label.textAlignment = .left
+        label.font = .systemFont(ofSize: 17, weight: .medium)
+        label.textColor = .white
         return label
     }()
     
@@ -30,15 +40,22 @@ class DailyWeatherCollectionViewCell: UICollectionViewCell {
         let imageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.contentMode = .scaleAspectFit
+        imageView.tintColor = .white
         return imageView
     }()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        contentView.backgroundColor = .tertiarySystemBackground
-        contentView.addSubview(timeLabel)
-        contentView.addSubview(icon)
-        contentView.addSubview(tempLabel)
+        contentView.layer.cornerRadius = 16
+        contentView.layer.borderWidth = 0.5
+        contentView.layer.borderColor = UIColor.white.withAlphaComponent(0.25).cgColor
+        contentView.backgroundColor = .clear
+        contentView.clipsToBounds = true
+
+        contentView.addSubview(blurView)
+        blurView.contentView.addSubview(timeLabel)
+        blurView.contentView.addSubview(icon)
+        blurView.contentView.addSubview(tempLabel)
         
         addConstraints()
     }
@@ -49,17 +66,23 @@ class DailyWeatherCollectionViewCell: UICollectionViewCell {
     
     private func addConstraints() {
         NSLayoutConstraint.activate([
-            timeLabel.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
-            timeLabel.leftAnchor.constraint(equalTo: contentView.leftAnchor),
-            timeLabel.heightAnchor.constraint(equalToConstant: 40),
+            blurView.topAnchor.constraint(equalTo: contentView.topAnchor),
+            blurView.leftAnchor.constraint(equalTo: contentView.leftAnchor),
+            blurView.rightAnchor.constraint(equalTo: contentView.rightAnchor),
+            blurView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
+
+            timeLabel.centerYAnchor.constraint(equalTo: blurView.contentView.centerYAnchor),
+            timeLabel.leftAnchor.constraint(equalTo: blurView.contentView.leftAnchor, constant: 20),
+            timeLabel.widthAnchor.constraint(equalToConstant: 110),
             
-            icon.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
-            icon.leftAnchor.constraint(equalTo: timeLabel.rightAnchor),
-            icon.heightAnchor.constraint(equalToConstant: 32),
+            icon.centerYAnchor.constraint(equalTo: blurView.contentView.centerYAnchor),
+            icon.centerXAnchor.constraint(equalTo: blurView.contentView.centerXAnchor),
+            icon.heightAnchor.constraint(equalToConstant: 28),
+            icon.widthAnchor.constraint(equalToConstant: 28),
             
-            tempLabel.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
-            tempLabel.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: -15),
-            tempLabel.leftAnchor.constraint(equalTo: icon.rightAnchor, constant: 20),
+            tempLabel.centerYAnchor.constraint(equalTo: blurView.contentView.centerYAnchor),
+            tempLabel.leadingAnchor.constraint(equalTo: icon.trailingAnchor, constant: 12),
+            tempLabel.rightAnchor.constraint(equalTo: blurView.contentView.rightAnchor, constant: -20),
         ])
     }
     
@@ -71,11 +94,9 @@ class DailyWeatherCollectionViewCell: UICollectionViewCell {
     }
     
     public func configure(with viewModel: DailyWeatherCollectionViewCellViewModel) {
-        icon.image = UIImage(systemName: viewModel.iconname)
+        let config = UIImage.SymbolConfiguration(pointSize: 22, weight: .light)
+        icon.image = UIImage(systemName: viewModel.iconname, withConfiguration: config)
         timeLabel.text = viewModel.day
-        
         tempLabel.text = viewModel.temperature
     }
 }
-
-

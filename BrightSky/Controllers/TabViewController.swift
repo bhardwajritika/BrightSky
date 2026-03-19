@@ -24,10 +24,11 @@ class TabViewController: UITabBarController {
         nav1.tabBarItem = UITabBarItem(title: "Weather", image: UIImage(systemName: "cloud.sun"), tag: 1)
         nav2.tabBarItem = UITabBarItem(title: "Settings", image: UIImage(systemName: "gear"), tag: 2)
         
-        setViewControllers([
-            nav1, nav2
-        ], animated: true)
-
+        setViewControllers([nav1, nav2], animated: true)
+        
+        // Tab bar styling
+        tabBar.tintColor = .white
+        tabBar.unselectedItemTintColor = UIColor.white.withAlphaComponent(0.5)
     }
 
 

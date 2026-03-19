@@ -10,12 +10,20 @@ import UIKit
 class HourlyWeatherCollectionViewCell: UICollectionViewCell {
     static let cellIdentifier = "HourlyWeatherCollectionViewCell"
     
-    
+    private let blurView: UIVisualEffectView = {
+        let blur = UIVisualEffectView(effect: UIBlurEffect(style: .systemUltraThinMaterialDark))
+        blur.translatesAutoresizingMaskIntoConstraints = false
+        blur.layer.cornerRadius = 20
+        blur.clipsToBounds = true
+        return blur
+    }()
+
     private let tempLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textAlignment = .center
-        label.font = .systemFont(ofSize: 18, weight: .regular)
+        label.font = .systemFont(ofSize: 17, weight: .semibold)
+        label.textColor = .white
         return label
     }()
     
@@ -23,7 +31,8 @@ class HourlyWeatherCollectionViewCell: UICollectionViewCell {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textAlignment = .center
-        label.font = .systemFont(ofSize: 15, weight: .regular)
+        label.font = .systemFont(ofSize: 13, weight: .medium)
+        label.textColor = .white.withAlphaComponent(0.7)
         return label
     }()
     
@@ -31,16 +40,23 @@ class HourlyWeatherCollectionViewCell: UICollectionViewCell {
         let imageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.contentMode = .scaleAspectFit
+        imageView.tintColor = .white
         return imageView
     }()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        contentView.layer.cornerRadius = 8
-        contentView.backgroundColor = .secondarySystemBackground
-        contentView.addSubview(timeLabel)
-        contentView.addSubview(icon)
-        contentView.addSubview(tempLabel)
+        // Glass border
+        contentView.layer.cornerRadius = 20
+        contentView.layer.borderWidth = 0.5
+        contentView.layer.borderColor = UIColor.white.withAlphaComponent(0.25).cgColor
+        contentView.backgroundColor = .clear
+        contentView.clipsToBounds = true
+        
+        contentView.addSubview(blurView)
+        blurView.contentView.addSubview(timeLabel)
+        blurView.contentView.addSubview(icon)
+        blurView.contentView.addSubview(tempLabel)
         
         addConstraints()
     }
@@ -51,20 +67,24 @@ class HourlyWeatherCollectionViewCell: UICollectionViewCell {
     
     private func addConstraints() {
         NSLayoutConstraint.activate([
-            timeLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 10),
-            timeLabel.leftAnchor.constraint(equalTo: contentView.leftAnchor),
-            timeLabel.heightAnchor.constraint(equalToConstant: 40),
-            timeLabel.rightAnchor.constraint(equalTo: contentView.rightAnchor),
+            blurView.topAnchor.constraint(equalTo: contentView.topAnchor),
+            blurView.leftAnchor.constraint(equalTo: contentView.leftAnchor),
+            blurView.rightAnchor.constraint(equalTo: contentView.rightAnchor),
+            blurView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
+
+            timeLabel.topAnchor.constraint(equalTo: blurView.contentView.topAnchor, constant: 12),
+            timeLabel.leftAnchor.constraint(equalTo: blurView.contentView.leftAnchor),
+            timeLabel.rightAnchor.constraint(equalTo: blurView.contentView.rightAnchor),
             
-            icon.topAnchor.constraint(equalTo: timeLabel.bottomAnchor),
-            icon.leftAnchor.constraint(equalTo: contentView.leftAnchor),
-            icon.heightAnchor.constraint(equalToConstant: 32),
-            icon.rightAnchor.constraint(equalTo: contentView.rightAnchor),
+            icon.topAnchor.constraint(equalTo: timeLabel.bottomAnchor, constant: 8),
+            icon.centerXAnchor.constraint(equalTo: blurView.contentView.centerXAnchor),
+            icon.heightAnchor.constraint(equalToConstant: 30),
+            icon.widthAnchor.constraint(equalToConstant: 30),
             
-            tempLabel.topAnchor.constraint(equalTo: icon.bottomAnchor),
-            tempLabel.leftAnchor.constraint(equalTo: contentView.leftAnchor),
-            tempLabel.rightAnchor.constraint(equalTo: contentView.rightAnchor),
-            tempLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
+            tempLabel.topAnchor.constraint(equalTo: icon.bottomAnchor, constant: 8),
+            tempLabel.leftAnchor.constraint(equalTo: blurView.contentView.leftAnchor),
+            tempLabel.rightAnchor.constraint(equalTo: blurView.contentView.rightAnchor),
+            tempLabel.bottomAnchor.constraint(equalTo: blurView.contentView.bottomAnchor, constant: -12)
         ])
     }
     
@@ -76,9 +96,9 @@ class HourlyWeatherCollectionViewCell: UICollectionViewCell {
     }
     
     public func configure(with viewModel: HourlyWeatherCollectionViewCellViewModel) {
-        icon.image = UIImage(systemName: viewModel.iconname)
+        let config = UIImage.SymbolConfiguration(pointSize: 24, weight: .light)
+        icon.image = UIImage(systemName: viewModel.iconname, withConfiguration: config)
         timeLabel.text = viewModel.hour
-        
-        tempLabel.text = Resources().formatTemperature (temp: viewModel.temperature)
+        tempLabel.text = Resources().formatTemperature(temp: viewModel.temperature)
     }
 }

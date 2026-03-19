@@ -12,16 +12,39 @@ import WeatherKit
 
 class WeatherViewController: UIViewController {
     
-    private let primaryView =  CurrentWeatherView()
+    private let primaryView = CurrentWeatherView()
+    private let gradientLayer = CAGradientLayer()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .systemBackground
+        setupGradient()
+        setupNavigationBar()
         view.addSubview(primaryView)
         addConstraints()
         getLocation()
+    }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        gradientLayer.frame = view.bounds
+    }
+    
+    private func setupGradient() {
+        let (topColor, bottomColor) = getGradientColors()
         
-       
+        gradientLayer.colors = [topColor.cgColor, bottomColor.cgColor]
+        gradientLayer.startPoint = CGPoint(x: 0.3, y: 0.0)
+        gradientLayer.endPoint   = CGPoint(x: 0.7, y: 1.0)
+        view.layer.insertSublayer(gradientLayer, at: 0)
+    }
+    
+    private func setupNavigationBar() {
+        let appearance = UINavigationBarAppearance()
+        appearance.configureWithTransparentBackground()
+        appearance.titleTextAttributes = [.foregroundColor: UIColor.white]
+        navigationController?.navigationBar.standardAppearance = appearance
+        navigationController?.navigationBar.scrollEdgeAppearance = appearance
+        navigationController?.navigationBar.tintColor = .white
     }
     
     @objc

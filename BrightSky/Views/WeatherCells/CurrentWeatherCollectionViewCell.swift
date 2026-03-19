@@ -10,19 +10,30 @@ import UIKit
 class CurrentWeatherCollectionViewCell: UICollectionViewCell {
     static let cellIdentifier = "CurrentWeatherCollectionViewCell"
     
+    private let dateLabel: UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.textAlignment = .center
+        label.font = .systemFont(ofSize: 15, weight: .medium)
+        label.textColor = .white.withAlphaComponent(0.75)
+        return label
+    }()
+    
     private let tempLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textAlignment = .center
-        label.font = .systemFont(ofSize: 45, weight: .medium)
+        label.font = .systemFont(ofSize: 72, weight: .thin)
+        label.textColor = .white
         return label
     }()
     
     private let conditionLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textAlignment = .center
-        label.font = .systemFont(ofSize: 24, weight: .regular)
+        label.textAlignment = .left
+        label.font = .systemFont(ofSize: 18, weight: .regular)
+        label.textColor = .white.withAlphaComponent(0.85)
         return label
     }()
     
@@ -30,15 +41,26 @@ class CurrentWeatherCollectionViewCell: UICollectionViewCell {
         let imageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.contentMode = .scaleAspectFit
+        imageView.tintColor = .white
         return imageView
+    }()
+    
+    // Groups icon + condition tightly with no SF Symbol whitespace gap
+    private lazy var weatherInfoStack: UIStackView = {
+        let stack = UIStackView(arrangedSubviews: [icon, conditionLabel])
+        stack.translatesAutoresizingMaskIntoConstraints = false
+        stack.axis = .horizontal
+        stack.spacing = 6
+        stack.alignment = .center
+        return stack
     }()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
+        contentView.backgroundColor = .clear
+        contentView.addSubview(dateLabel)
         contentView.addSubview(tempLabel)
-        contentView.addSubview(icon)
-        contentView.addSubview(conditionLabel)
-        
+        contentView.addSubview(weatherInfoStack)
         addConstraints()
     }
     
@@ -48,20 +70,21 @@ class CurrentWeatherCollectionViewCell: UICollectionViewCell {
     
     private func addConstraints() {
         NSLayoutConstraint.activate([
-            tempLabel.topAnchor.constraint(equalTo: contentView.topAnchor),
+            dateLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 16),
+            dateLabel.leftAnchor.constraint(equalTo: contentView.leftAnchor),
+            dateLabel.rightAnchor.constraint(equalTo: contentView.rightAnchor),
+            dateLabel.heightAnchor.constraint(equalToConstant: 22),
+
+            tempLabel.topAnchor.constraint(equalTo: dateLabel.bottomAnchor, constant: 4),
             tempLabel.leftAnchor.constraint(equalTo: contentView.leftAnchor),
             tempLabel.rightAnchor.constraint(equalTo: contentView.rightAnchor),
             
-            icon.heightAnchor.constraint(equalToConstant: 55),
-            icon.widthAnchor.constraint(equalToConstant: 55),
-            icon.topAnchor.constraint(equalTo: tempLabel.bottomAnchor),
-            icon.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -20),
+            weatherInfoStack.topAnchor.constraint(equalTo: tempLabel.bottomAnchor, constant: 12),
+            weatherInfoStack.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
+            weatherInfoStack.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -20),
             
-            conditionLabel.topAnchor.constraint(equalTo: tempLabel.bottomAnchor),
-            conditionLabel.leftAnchor.constraint(equalTo: icon.rightAnchor, constant: 10),
-            conditionLabel.heightAnchor.constraint(equalToConstant: 80),
-            conditionLabel.centerXAnchor.constraint(equalTo: contentView.centerXAnchor, constant: 15),
-            conditionLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -20)
+            icon.heightAnchor.constraint(equalToConstant: 36),
+            icon.widthAnchor.constraint(equalToConstant: 36),
         ])
     }
     
@@ -70,12 +93,17 @@ class CurrentWeatherCollectionViewCell: UICollectionViewCell {
         conditionLabel.text = nil
         icon.image = nil
         tempLabel.text = nil
+        dateLabel.text = nil
     }
     
     public func configure(with viewModel: CurrentWeatherCollectionViewCellViewModel) {
-        icon.image = UIImage(systemName: viewModel.iconName)
+        let config = UIImage.SymbolConfiguration(pointSize: 38, weight: .light)
+        icon.image = UIImage(systemName: viewModel.iconName, withConfiguration: config)
         conditionLabel.text = viewModel.condition
+        tempLabel.text = Resources().formatTemperature(temp: viewModel.temperature)
         
-        tempLabel.text = Resources().formatTemperature (temp: viewModel.temperature)
+        let formatter = DateFormatter()
+        formatter.dateFormat = "EEEE, d MMMM"
+        dateLabel.text = formatter.string(from: Date())
     }
 }
